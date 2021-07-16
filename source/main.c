@@ -2,7 +2,7 @@
  *  Partner(s) Name: 
  *	Lab Section:
  *	Assignment: Lab #9  Exercise #3
- *	Exercise Description:  https://youtu.be/JX0OsJX12mA
+ *	Exercise Description:  https://youtu.be/BvjqH28eiU4
  *
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
@@ -71,17 +71,18 @@ int BlinkingLEDSM_Tick(int state) {
 	}
 	return state;
 }
-
+//pwm high low
+unsigned char hlCount = 0x01;
 enum Speaker_States{S_Start, S_HIGH, S_LOW} Speaker_State;
 int SpeakerSM_Tick(int state) {
 	static unsigned char j;
         switch(state) {
                 case S_Start: state = (~PINA&0x04) ? S_HIGH : S_Start; break;
                 case S_HIGH: 
-                        if((~PINA&0x04) && j <= 2) {
+                        if((~PINA&0x04) && j <= hlCount) {
                                 state = S_HIGH;
                         }
-                        else if((~PINA&0x04) && !(j<= 2)) {
+                        else if((~PINA&0x04) && !(j<= hlCount)) {
                                 state = S_LOW;
                                 j = 0;
                         }
@@ -89,10 +90,10 @@ int SpeakerSM_Tick(int state) {
                                 state = S_Start;
                         }
                         break;
-                case S_LOW: if((~PINA&0x04) && j <= 2) {
+                case S_LOW: if((~PINA&0x04) && j <= hlCount) {
                                 state = S_LOW;
                         }
-                        else if((~PINA&0x04) && !(j<=2)) {
+                        else if((~PINA&0x04) && !(j<=hlCount)) {
                                 state = S_HIGH;
                                 j = 0;
                         }
